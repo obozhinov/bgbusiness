@@ -19,20 +19,12 @@ public class AddressService {
     @Autowired
     private BusinessRepository businessRepository;
 
-    public Business save(long business_id, Address address) {
+    public Address save(long business_id, Address address) {
         //do we have a business that exists to witch we can assign the address throw an exception
         return businessRepository.findById(business_id).map(business -> {
             address.setBusiness(business);
-            business.getAddresses().add(address);
-            return businessRepository.save(business);
+            return addressRepository.save(address);
         }).orElseThrow(() -> new ResourceNotFoundException("Business " + business_id + " not found"));
-    }
-
-    public Address update(long business_id, Address address) {
-        if(!businessRepository.existsById(business_id)) {
-            throw new ResourceNotFoundException("Business" + business_id + " not found");
-        }
-        return addressRepository.save(address);
     }
 
     public void deleteById(long id) {

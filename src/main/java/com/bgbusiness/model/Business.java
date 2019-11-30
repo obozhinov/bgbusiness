@@ -1,5 +1,7 @@
 package com.bgbusiness.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,15 +13,15 @@ import java.util.List;
 public class Business {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     @NotNull
     private String name;
     private String imagePath;
     private String description;
     private boolean hiring;
-    @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "business", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
 
     public Business() {}
@@ -41,11 +43,11 @@ public class Business {
         this.addresses = addresses;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

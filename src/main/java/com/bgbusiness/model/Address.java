@@ -1,18 +1,19 @@
 package com.bgbusiness.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
 @Table(name="addresses")
 public class Address {
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     @NotNull
     private String street;
     private String unit;
@@ -25,9 +26,9 @@ public class Address {
     private String phone;
     private String website;
     private boolean baseOffice;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    @JoinColumn(name="business_id")
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_business", updatable = false, nullable = false)
+    @JsonBackReference
     private Business business;
 
     public Address() {}
@@ -45,7 +46,7 @@ public class Address {
         this.business = business;
     }
 
-    public Address(long id, @NotNull String street, String unit, @NotNull String city, @NotNull String country, String zip, String email, String phone, String website, boolean baseOffice, Business business) {
+    public Address(long id, @NotNull String street, String unit, @NotNull String city, @NotNull String country, String zip, String email, String phone, String website, boolean baseOffice, Business business, Business business1) {
         this.id = id;
         this.street = street;
         this.unit = unit;
@@ -56,14 +57,14 @@ public class Address {
         this.phone = phone;
         this.website = website;
         this.baseOffice = baseOffice;
-        this.business = business;
+        this.business = business1;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
