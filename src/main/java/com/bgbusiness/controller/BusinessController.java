@@ -12,10 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/business")
+@RequestMapping("/api/business")
 public class BusinessController {
 
     @Autowired
@@ -31,28 +32,28 @@ public class BusinessController {
     private ValidationErrorService validationService;
 
     @RequestMapping("/all")
-    public Collection<Business> getAllBusinesses() {
-        return businessService.findAll();
+    public Collection<Business> getAllBusinesses(Principal principal) {
+        return businessService.findAll(principal.getName());
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createOrUpdateBusiness(@RequestBody Business business, BindingResult bindingResult) {
+    public ResponseEntity<?> createOrUpdateBusiness(@RequestBody Business business, BindingResult bindingResult, Principal principal) {
         ResponseEntity<?> errorMap = validationService.ValidationErrorService(bindingResult);
         if(errorMap != null) return errorMap;
 
-        businessService.saveOrUpdateBusiness(business);
+        businessService.saveOrUpdateBusiness(business, principal.getName());
         return new ResponseEntity<>(business, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id) {
         businessService.deleteBusiness(id);
-        return new ResponseEntity<String>("Recipe with id = " + id + "was successfuly deleted!", HttpStatus.OK);
+        return new ResponseEntity<String>("Recipe with id = " + id + "was successfully deleted!", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findBusinessById(@PathVariable long id) {
-        Business business = businessService.findById(id).get();
+    public ResponseEntity<?> findBusinessById(@PathVariable long id, Principal principal) {
+        Business business = businessService.findById(id, principal.getName());
         return new ResponseEntity<Business>(business, HttpStatus.OK);
     }
 

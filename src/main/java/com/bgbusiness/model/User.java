@@ -1,5 +1,6 @@
 package com.bgbusiness.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -16,7 +19,6 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @Email(message="Your user name must be an email!")
     @NotNull
     @Column(unique = true)
@@ -31,9 +33,12 @@ public class User implements UserDetails {
     private String passwordConfirmation;
     private Date created_At;
     private Date updated_At;
+    @OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Business> businesses = new ArrayList<>();
 
-    public User() {
-    }
+
+    public User() {}
 
     public Long getId() {
         return id;
@@ -41,6 +46,14 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
+    }
+
+    public List<Business> getBusinesses() {
+        return businesses;
+    }
+
+    public void setBusinesses(List<Business> businesses) {
+        this.businesses = businesses;
     }
 
     @PrePersist

@@ -1,5 +1,6 @@
 package com.bgbusiness.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,11 @@ public class Business {
     @OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "business", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_user", updatable = false, nullable = false)
+    @JsonBackReference
+    private User user;
 
     public Business() {}
 
@@ -86,6 +92,14 @@ public class Business {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
