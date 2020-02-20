@@ -32,7 +32,12 @@ public class BusinessController {
     private ValidationErrorService validationService;
 
     @RequestMapping("/all")
-    public Collection<Business> getAllBusinesses(Principal principal) {
+    public Collection<Business> getAllBusinesses() {
+        return businessService.findAll();
+    }
+
+    @RequestMapping("/all-for-user")
+    public Collection<Business> getAllBusinessesForUser(Principal principal) {
         return businessService.findAll(principal.getName());
     }
 
@@ -46,8 +51,8 @@ public class BusinessController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable long id) {
-        businessService.deleteBusiness(id);
+    public ResponseEntity<?> deleteById(@PathVariable long id, Principal principal) {
+        businessService.deleteBusiness(id, principal.getName());
         return new ResponseEntity<String>("Recipe with id = " + id + "was successfully deleted!", HttpStatus.OK);
     }
 
@@ -58,32 +63,22 @@ public class BusinessController {
     }
 
     @GetMapping("/{id}/address")
-    public ResponseEntity<?> findAddressForBusiness(@PathVariable long id) {
-        Collection<Address> addresses = businessService.findAllAddresses(id);
+    public ResponseEntity<?> findAddressForBusiness(@PathVariable long id, Principal principal) {
+        Collection<Address> addresses = businessService.findAllAddresses(id, principal.getName());
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/address")
-    public ResponseEntity<?> addAddress(@PathVariable long id, @RequestBody Address address, BindingResult bindingResult) {
+    public ResponseEntity<?> addAddress(@PathVariable long id, @RequestBody Address address, BindingResult bindingResult, Principal principal) {
         ResponseEntity<?> errorMap = validationService.ValidationErrorService(bindingResult);
         if(errorMap != null) return errorMap;
-        Address a = addressService.save(id, address);
+        Address a = addressService.saveOrUpdate(id, address, principal.getName());
         return new ResponseEntity<>(address, HttpStatus.CREATED);
     }
-
-    @PutMapping("/{id}/address")
-    public ResponseEntity<?> updateAddress(@PathVariable long id, @RequestBody Address address, BindingResult bindingResult) {
-        ResponseEntity<?> errorMap = validationService.ValidationErrorService(bindingResult);
-        if(errorMap != null) return errorMap;
-
-        addressService.save(id, address);
-        return new ResponseEntity<>(address, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}/address/{address_id}")
-    public ResponseEntity<?> deleteAddressById(@PathVariable long address_id) {
-        addressService.deleteById(address_id);
-        return new ResponseEntity<>("Address with id = " + address_id + "was successfuly deleted!", HttpStatus.OK);
+    public ResponseEntity<?> deleteAddressById(@PathVariable long id, @PathVariable long address_id, Principal principal) {
+        addressService.deleteById(id, address_id, principal.getName());
+        return new ResponseEntity<>("Address with id = " + address_id + "was successfully deleted!", HttpStatus.OK);
     }
 
     @GetMapping("/country/{country}")

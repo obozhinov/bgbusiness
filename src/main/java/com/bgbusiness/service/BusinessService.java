@@ -29,9 +29,10 @@ public class BusinessService {
     UserRepository userRepository;
 
     public Business saveOrUpdateBusiness(Business business, String name) {
-        //if address doesn't exists set up a new Address and add the relationship to both sides
-        //catch an exception Business id doesn't exists
         User user = userRepository.findByUsername(name);
+        if(business.getId() == null && !business.getUser().equals(user)) {
+            new ResourceNotFoundException("Business not found in your account!");
+        }
         business.setUser(user);
         return businessRepo.save(business);
     }
@@ -47,8 +48,8 @@ public class BusinessService {
         return business;
     }
 
-    public void deleteBusiness(long id) {
-        businessRepo.deleteById(id);
+    public void deleteBusiness(long id, String username) {
+        businessRepo.deleteById(findById(id, username).getId());
     }
 
     public Business addAddressToBusienss(long id, Address address) {
@@ -71,8 +72,17 @@ public class BusinessService {
         return businessRepo.findAllByUser(user).stream().collect(Collectors.toList());
     }
 
-    public Collection<Address> findAllAddresses(long business_id) {
-        return businessRepo.findById(business_id).get().getAddresses();
+    public Collection<Business> findAll() {
+        return businessRepo.findAll().stream().collect(Collectors.toList());
+    }
+
+    public Collection<Address> findAllAddresses(long business_id, String username) {
+        User user = userRepository.findByUsername(username);
+        Business business = businessRepo.findById(business_id).get();
+        if(!business.getUser().equals(user) || business == null) {
+            new ResourceNotFoundException("Business not found in your account!");
+        }
+        return business.getAddresses();
     }
 
     public Collection<Business> filterByCountry(String country) {
