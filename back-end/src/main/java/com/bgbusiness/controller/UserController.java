@@ -6,6 +6,7 @@ import com.bgbusiness.payload.LoginRequest;
 import com.bgbusiness.security.JwtTokenProvider;
 import com.bgbusiness.service.UserService;
 import com.bgbusiness.service.ValidationErrorService;
+import com.bgbusiness.service.MapValidationErrorService;
 import com.bgbusiness.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,13 @@ import javax.validation.Valid;
 import static com.bgbusiness.service.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
-@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private ValidationErrorService validationErrorService;
+
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
 
     @Autowired
     private UserService userService;
@@ -45,7 +48,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticatedUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
-        ResponseEntity<?> errorMap = validationErrorService.ValidationErrorService(result);
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
         if(errorMap != null) return errorMap;
 
@@ -66,7 +69,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) throws Exception {
         userValidator.validate(user, result);
 
-        ResponseEntity<?> errorMap = validationErrorService.ValidationErrorService(result);
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
         User newUser = userService.saveUser(user);
 

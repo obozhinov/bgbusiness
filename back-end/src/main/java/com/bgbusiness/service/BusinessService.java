@@ -30,11 +30,18 @@ public class BusinessService {
 
     public Business saveOrUpdateBusiness(Business business, String name) {
         User user = userRepository.findByUsername(name);
-        if(business.getId() == null && !business.getUser().equals(user)) {
+
+        if (business.getId() != null && !business.getUser().equals(user)) {
             new ResourceNotFoundException("Business not found in your account!");
         }
-        business.setUser(user);
-        return businessRepo.save(business);
+
+        try {
+            business.setUser(user);
+            return businessRepo.save(business);
+        } catch (Exception e) {
+            new ResourceNotFoundException("Business already exists!");
+        }
+        return null;
     }
 
     public Business findById(long id, String username) {

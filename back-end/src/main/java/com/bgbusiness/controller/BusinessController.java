@@ -16,7 +16,7 @@ import java.security.Principal;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/api/business")
+@RequestMapping("/business")
 public class BusinessController {
 
     @Autowired

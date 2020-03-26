@@ -22,7 +22,7 @@ public class UserService {
             newUser.setPasswordConfirmation("");
             return userRespository.save(newUser);
         } catch (Exception e) {
-            throw new Exception("User already exists");
+            throw new Exception(e);
         }
     }
 }
