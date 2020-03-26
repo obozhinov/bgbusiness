@@ -32,3 +32,6 @@ build/
 
 ### Application Properties passwords ###
 /src/main/resources/application.properties
+
+### Security config ###
+/src/main/java/com/bgbusiness/service/SecurityConstants.java
