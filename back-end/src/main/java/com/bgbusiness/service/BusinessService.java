@@ -36,7 +36,6 @@ public class BusinessService {
         try {
             User user = userRepository.findByUsername(principal.getName());
             if (business.getId() != null) {
-                System.out.println("##############Business id: " + business.getId());
                 Business existingBusiness = findById(business.getId(), user.getUsername());
             }
         }catch (Exception e) {

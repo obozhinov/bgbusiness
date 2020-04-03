@@ -53,7 +53,7 @@ class NavigationDrawer extends Component {
               onKeyDown={this.toggleDrawer(false)}
             >
               <nav>
-                <List>
+                <List style={this.state.list}>
                   <ListItem>
                     <ListItemText primary="Menu" />
                   </ListItem>
@@ -85,9 +85,19 @@ class NavigationDrawer extends Component {
           onKeyDown={this.toggleDrawer(false)}
          >
           <nav>
-            <List>
+            <List style={this.state.list}>
               <ListItem>
                 <ListItemText primary="Menu" />
+              </ListItem>
+              <ListItem button>
+                 <Link to="/logout" style={{textDecoration: 'none', color: 'black'}} onClick={this.logoutUser.bind(this)}>
+                   <ListItemText primary="Logout" />
+                 </Link>
+               </ListItem>
+              <ListItem button>
+                <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+                  <ListItemText primary="Home" />
+                </Link>
               </ListItem>
               <ListItem button>
                 <Link to="/addbusiness" style={{textDecoration: 'none', color: 'black'}}>
@@ -95,20 +105,10 @@ class NavigationDrawer extends Component {
                 </Link>
               </ListItem>
               <ListItem button>
-                <Link to="/business/" style={{textDecoration: 'none', color: 'black'}}>
-                  <ListItemText primary="Update Business" />
-                </Link>
-              </ListItem>
-              <ListItem button>
                 <Link to="/my-business" style={{textDecoration: 'none', color: 'black'}}>
                   <ListItemText primary="My Business List" />
                 </Link>
               </ListItem>
-              <ListItem button>
-                 <Link to="/logout" style={{textDecoration: 'none', color: 'black'}} onClick={this.logoutUser.bind(this)}>
-                   <ListItemText primary="Logout" />
-                 </Link>
-               </ListItem>
             </List>
           </nav>
         </div>
@@ -130,6 +130,9 @@ class NavigationDrawer extends Component {
               >
                 <div xs='12'>
                   <Button onClick={this.toggleDrawer(true)}><MenuIcon/></Button>
+                  <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+                                    Bulgarian Businesses
+                                  </Link>
                 </div>
               </Grid>
               <Drawer open={this.state.left} onClose={this.toggleDrawer(false)}>

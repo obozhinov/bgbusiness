@@ -9,6 +9,7 @@ import BusinessList from './BusinessList';
 import NavigationDrawer from './NavigationDrawer';
 import MyBusinessList from './MyBusinessList';
 import AddBusiness from './AddBusiness';
+import BusinessInfo from './BusinessInfo';
 import UpdateBusiness from './UpdateBusiness';
 import Register from './Register';
 import { Provider } from 'react-redux';
@@ -55,6 +56,9 @@ export default function Navigation() {
          <Route path="/register">
           <Register />
          </Route>
+         <Route path="/business/info/:id">
+           <BusinessInfo />
+          </Route>
          <SecureRoute path="/addbusiness" component={AddBusiness}/>
          <SecureRoute path="/business/:id" component={UpdateBusiness}/>
          <SecureRoute path="/my-business" component={MyBusinessList}/>

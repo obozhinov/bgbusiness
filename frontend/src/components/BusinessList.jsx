@@ -17,7 +17,7 @@ class BusinessList extends Component {
       return (
           <Grid container spacing={3} >
              {businesses.map(business => {
-                return(<BusinessItem key={business.id} id={business.id} name={business.name} description={business.description} image={business.imagePath} />);
+                return(<BusinessItem key={business.id} showUpdate={false} showDelete={false} id={business.id} name={business.name} description={business.description} image={business.imagePath} />);
              })}
           </Grid>
       );

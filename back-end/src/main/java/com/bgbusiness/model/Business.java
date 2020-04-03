@@ -32,21 +32,29 @@ public class Business {
 
     public Business() {}
 
-    public Business(long id, @NotNull String name, String imagePath, String description, boolean hiring, List<Address> addresses) {
+    public Business(Long id, @NotNull String name, String imagePath, String description, boolean hiring, String email, String phone, String website, List<Address> addresses, User user) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.description = description;
         this.hiring = hiring;
+        this.email = email;
+        this.phone = phone;
+        this.website = website;
         this.addresses = addresses;
+        this.user = user;
     }
 
-    public Business(@NotNull String name, String imagePath, String description, boolean hiring, List<Address> addresses) {
+    public Business(@NotNull String name, String imagePath, String description, boolean hiring, String email, String phone, String website, List<Address> addresses, User user) {
         this.name = name;
         this.imagePath = imagePath;
         this.description = description;
         this.hiring = hiring;
+        this.email = email;
+        this.phone = phone;
+        this.website = website;
         this.addresses = addresses;
+        this.user = user;
     }
 
     public Long getId() {
@@ -105,6 +113,30 @@ public class Business {
         this.user = user;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     @Override
     public String toString() {
         return "Business{" +
@@ -112,6 +144,9 @@ public class Business {
                 ", name='" + name + '\'' +
                 ", imagePath='" + imagePath + '\'' +
                 ", description='" + description + '\'' +
+                ", email=" + email +
+                ", phone=" + phone +
+                ", website=" + website +
                 ", hiring=" + hiring +
                 ", addresses=" + addresses +
                 '}';

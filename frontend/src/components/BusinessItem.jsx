@@ -23,8 +23,10 @@ class BusinessItem extends React.Component {
                          maxWidth: 400
                        },
                      });
+
     this.defaultImage = this.defaultImage.bind(this);
     this.deleteBusiness = this.deleteBusiness.bind(this);
+    this.updateBusiness = this.updateBusiness.bind(this);
     this.toInfo = this.toInfo.bind(this);
   }
 
@@ -35,15 +37,32 @@ class BusinessItem extends React.Component {
   }
 
   deleteBusiness() {
-  debugger;
     this.props.deleteBusiness(this.props.id);
   }
 
-  toInfo() {
-    this.props.history.push('/login');
+  updateBusiness() {
+    this.props.history.push(`/business/${this.props.id}`);
   }
 
+  toInfo() {
+    this.props.history.push(`/business/info/${this.props.id}`);
+  }
+
+
+
   render() {
+    let deleteButton;
+    let updateButton;
+    if(this.props.showDelete) {
+      deleteButton = <Button size="small" color="primary" onClick={this.deleteBusiness}>
+                       Delete
+                     </Button>;
+    }
+    if(this.props.showUpdate) {
+      updateButton = <Button size="small" color="primary" onClick={this.updateBusiness}>
+                                   Update
+                                 </Button>;
+    }
       return (
       <Grid item xs={12} md={4} lg={4}>
         <Card className={this.style.media}>
@@ -64,9 +83,8 @@ class BusinessItem extends React.Component {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary" onClick={this.deleteBusiness}>
-              Delete
-            </Button>
+            {deleteButton}
+            {updateButton}
             <Button size="small" color="primary" onClick={this.toInfo}>
               Learn More
             </Button>
