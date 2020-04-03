@@ -1,4 +1,4 @@
-import { GET_BUSINESSES, GET_BUSINESS } from "../actions/types";
+import { GET_BUSINESSES, GET_BUSINESS, DELETE_BUSINESS } from "../actions/types";
 
 const initialState = {
   businesses: [],
@@ -16,6 +16,13 @@ export default function(state = initialState, action) {
           return {
             ...state,
             business: action.payload
+          };
+    case DELETE_BUSINESS:
+          return {
+            ...state,
+            businesses: state.businesses.filter(
+                      business => business.id !== action.payload
+                    )
           };
 
     default:

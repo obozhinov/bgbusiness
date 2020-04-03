@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 import './style.scss';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -45,14 +46,14 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.handleSubmit} display="block" style={{width: '30vw', margin: '25vh auto 0 auto'}}>
+            <Grid item sm={12} md={9} lg={4} style={{margin: '25vh auto 0 auto'}}>
+                <form onSubmit={this.handleSubmit} display="block">
                     <h1>Login</h1>
                     <TextField style={{width: '100%', 'marginBottom': '3vh'}} id="email" name="username" label="Email" variant="outlined" value={this.state.username} onChange={this.onChange}/>
                     <TextField style={{width: '100%', 'marginBottom': '3vh'}} type="password" id="password" name="password" label="Password" variant="outlined" value={this.state.password} onChange={this.onChange}/>
                     <Button style={{width: '100%'}} variant="contained" color="primary" type="submit">Login</Button>
                 </form>
-            </div>
+            </Grid>
         );
     }
 }

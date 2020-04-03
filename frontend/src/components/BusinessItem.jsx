@@ -8,9 +8,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from "prop-types";
+import { deleteBusiness } from "../actions/businessActions";
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
 
-
-export default class BusinessItem extends React.Component {
+class BusinessItem extends React.Component {
   constructor(props) {
     super(props);
     this.style = makeStyles({
@@ -21,17 +24,28 @@ export default class BusinessItem extends React.Component {
                        },
                      });
     this.defaultImage = this.defaultImage.bind(this);
+    this.deleteBusiness = this.deleteBusiness.bind(this);
+    this.toInfo = this.toInfo.bind(this);
   }
 
   defaultImage(imagePath) {
-    if(imagePath === null) {
+    if(imagePath === null || imagePath === '') {
       return  process.env.PUBLIC_URL + "/business.jpg";
     }
   }
 
+  deleteBusiness() {
+  debugger;
+    this.props.deleteBusiness(this.props.id);
+  }
+
+  toInfo() {
+    this.props.history.push('/login');
+  }
+
   render() {
-    return (
-      <Grid item xs={4}>
+      return (
+      <Grid item xs={12} md={4} lg={4}>
         <Card className={this.style.media}>
           <CardActionArea>
             <CardMedia
@@ -50,10 +64,10 @@ export default class BusinessItem extends React.Component {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary">
-              Share
+            <Button size="small" color="primary" onClick={this.deleteBusiness}>
+              Delete
             </Button>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={this.toInfo}>
               Learn More
             </Button>
           </CardActions>
@@ -62,3 +76,15 @@ export default class BusinessItem extends React.Component {
     );
   }
 }
+
+BusinessItem.propTypes = {
+  deleteBusiness: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+});
+
+export default withRouter(connect(
+  mapStateToProps,
+  { deleteBusiness }
+)(BusinessItem));

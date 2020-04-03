@@ -17,7 +17,7 @@ export const register = (userDetails, history) => async dispatch => {
   debugger;
     dispatch({
       type: GET_ERRORS,
-      payload: err
+      payload: err.response.data
     });
   }
 }
@@ -36,7 +36,7 @@ export const login = (userDetails, history) => async dispatch => {
   } catch(err) {
     dispatch({
       type: GET_ERRORS,
-      payload: err
+      payload: err.response.data
     });
   }
 }

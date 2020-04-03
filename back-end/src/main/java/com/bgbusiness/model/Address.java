@@ -22,9 +22,6 @@ public class Address {
     @NotNull
     private String country;
     private String zip;
-    private String email;
-    private String phone;
-    private String website;
     private boolean baseOffice;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_business", updatable = false, nullable = false)
@@ -33,15 +30,12 @@ public class Address {
 
     public Address() {}
 
-    public Address(@NotNull String street, String unit, @NotNull String city, @NotNull String country, String zip, String email, String phone, String website, boolean baseOffice, Business business) {
+    public Address(@NotNull String street, String unit, @NotNull String city, @NotNull String country, String zip, boolean baseOffice, Business business) {
         this.street = street;
         this.unit = unit;
         this.city = city;
         this.country = country;
         this.zip = zip;
-        this.email = email;
-        this.phone = phone;
-        this.website = website;
         this.baseOffice = baseOffice;
         this.business = business;
     }
@@ -53,9 +47,6 @@ public class Address {
         this.city = city;
         this.country = country;
         this.zip = zip;
-        this.email = email;
-        this.phone = phone;
-        this.website = website;
         this.baseOffice = baseOffice;
         this.business = business1;
     }
@@ -108,30 +99,6 @@ public class Address {
         this.zip = zip;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
     public boolean isBaseOffice() {
         return baseOffice;
     }
@@ -157,9 +124,6 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
                 ", zip='" + zip + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", website='" + website + '\'' +
                 ", baseOffice=" + baseOffice +
                 ", business=" + business +
                 '}';

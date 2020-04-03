@@ -15,6 +15,10 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
     @Query("SELECT business FROM Business business LEFT JOIN business.addresses a WHERE business.id = a.business")
     List<Business> findAllByAddressesAndCountry(String country);
 
-    List<Business> findAllByUser(User user);
+    @Query(
+      value="SELECT * FROM BUSINESS WHERE fk_user = :userId",
+      nativeQuery = true
+    )
+    List<Business> findAllByUser(Long userId);
     Business getById(Long id);
 }

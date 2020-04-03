@@ -1,4 +1,5 @@
 import { CURRENT_USER } from "../actions/types";
+import _ from "lodash";
 
 const initialState = {
   validToken: false,
@@ -6,7 +7,7 @@ const initialState = {
 };
 
 const booleanActionPayload = payload => {
-  if (payload) {
+  if (payload && !_.isEmpty(payload)) {
     return true;
   } else {
     return false;

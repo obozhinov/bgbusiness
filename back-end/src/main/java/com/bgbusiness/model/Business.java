@@ -18,6 +18,9 @@ public class Business {
     private String imagePath;
     private String description;
     private boolean hiring;
+    private String email;
+    private String phone;
+    private String website;
     @OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "business", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();

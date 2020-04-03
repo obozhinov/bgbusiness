@@ -45,8 +45,7 @@ public class BusinessController {
     public ResponseEntity<?> createOrUpdateBusiness(@RequestBody Business business, BindingResult bindingResult, Principal principal) {
         ResponseEntity<?> errorMap = validationService.ValidationErrorService(bindingResult);
         if(errorMap != null) return errorMap;
-
-        businessService.saveOrUpdateBusiness(business, principal.getName());
+        businessService.saveOrUpdateBusiness(business, principal);
         return new ResponseEntity<>(business, HttpStatus.CREATED);
     }
 

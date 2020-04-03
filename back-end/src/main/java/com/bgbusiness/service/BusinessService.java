@@ -1,5 +1,6 @@
 package com.bgbusiness.service;
 
+import com.bgbusiness.exceptions.BusinessNotFoundException;
 import com.bgbusiness.model.Address;
 import com.bgbusiness.model.Business;
 import com.bgbusiness.model.User;
@@ -11,6 +12,9 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -28,31 +32,37 @@ public class BusinessService {
     @Autowired
     UserRepository userRepository;
 
-    public Business saveOrUpdateBusiness(Business business, String name) {
-        User user = userRepository.findByUsername(name);
+    public Business saveOrUpdateBusiness(Business business, Principal principal) {
+        try {
+            User user = userRepository.findByUsername(principal.getName());
+            if (business.getId() != null) {
+                System.out.println("##############Business id: " + business.getId());
+                Business existingBusiness = findById(business.getId(), user.getUsername());
+            }
+        }catch (Exception e) {
+            throw new BusinessNotFoundException("Business not found in your account!");
 
-        if (business.getId() != null && !business.getUser().equals(user)) {
-            new ResourceNotFoundException("Business not found in your account!");
         }
 
         try {
+            User user = userRepository.findByUsername(principal.getName());
             business.setUser(user);
             return businessRepo.save(business);
         } catch (Exception e) {
-            new ResourceNotFoundException("Business already exists!");
+            throw new BusinessNotFoundException("Business with id: " + business.getId() + " already exists!");
         }
-        return null;
     }
 
     public Business findById(long id, String username) {
-        Business business = businessRepo.getById(id);
-        if(business == null) {
-            new ResourceNotFoundException("Business with id = " + id + " not found!");
+        try {
+            Business business = businessRepo.getById(id);
+            if(!business.getUser().getUsername().equals(username)) {
+                throw new BusinessNotFoundException("Business not found in your account!");
+            }
+            return business;
+        } catch (Exception e) {
+            throw new BusinessNotFoundException("Business with id = " + id + " not found!");
         }
-        if(!business.getUser().getUsername().equals(username)) {
-            new ResourceNotFoundException("Business not found in your account!");
-        }
-        return business;
     }
 
     public void deleteBusiness(long id, String username) {
@@ -75,8 +85,12 @@ public class BusinessService {
     }
 
     public Collection<Business> findAll(String username) {
-        User user = userRepository.findByUsername(username);
-        return businessRepo.findAllByUser(user).stream().collect(Collectors.toList());
+        try {
+            User user = userRepository.findByUsername(username);
+            return new ArrayList<>(businessRepo.findAllByUser(user.getId()));
+        } catch(Exception e) {
+           throw new BusinessNotFoundException("You don't have access!");
+        }
     }
 
     public Collection<Business> findAll() {
@@ -87,7 +101,7 @@ public class BusinessService {
         User user = userRepository.findByUsername(username);
         Business business = businessRepo.findById(business_id).get();
         if(!business.getUser().equals(user) || business == null) {
-            new ResourceNotFoundException("Business not found in your account!");
+            throw new ResourceNotFoundException("Business not found in your account!");
         }
         return business.getAddresses();
     }

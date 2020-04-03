@@ -1,5 +1,6 @@
 package com.bgbusiness.service;
 
+import com.bgbusiness.exceptions.UsernameAlreadyExistsException;
 import com.bgbusiness.model.User;
 import com.bgbusiness.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserService {
             newUser.setPasswordConfirmation("");
             return userRespository.save(newUser);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new UsernameAlreadyExistsException("Username '"+newUser.getUsername()+"' already exists!");
         }
     }
 }

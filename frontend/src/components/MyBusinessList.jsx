@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import BusinessItem from './BusinessItem';
 import { connect } from "react-redux";
-import { getBusinesses } from "../actions/businessActions";
+import { getMyBusinesses } from "../actions/businessActions";
 import { withRouter } from 'react-router-dom';
 
-class BusinessList extends Component {
+class MyBusinessList extends Component {
     componentDidMount() {
-      this.props.getBusinesses();
+      this.props.getMyBusinesses();
     };
 
     render() {
@@ -24,9 +24,9 @@ class BusinessList extends Component {
     }
 }
 
-BusinessList.propTypes = {
+MyBusinessList.propTypes = {
   business: PropTypes.object.isRequired,
-  getBusinesses: PropTypes.func.isRequired,
+  getMyBusinesses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -35,5 +35,5 @@ const mapStateToProps = state => ({
 
 export default withRouter(connect(
   mapStateToProps,
-  { getBusinesses }
-)(BusinessList));
+  { getMyBusinesses }
+)(MyBusinessList));
