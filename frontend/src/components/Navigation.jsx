@@ -18,6 +18,7 @@ import jwt_decode from "jwt-decode";
 import setJWTToken from "../security/setJWTToken";
 import {CURRENT_USER} from "../actions/types";
 import SecureRoute from "../security/SecureRoute";
+import { logout } from "../actions/businessActions"
 
 
 const jwtToken = localStorage.jwtToken;
@@ -30,11 +31,11 @@ if (jwtToken) {
     payload: decoded_jwtToken
   });
 
-//   const currentTime = Date.now() / 1000;
-//   if (decoded_jwtToken.exp < currentTime) {
-//     store.dispatch(logout());
-//     window.location.href = "/";
-//   }
+  const currentTime = Date.now() / 1000;
+  if (decoded_jwtToken.exp < currentTime) {
+    store.dispatch(logout());
+    window.location.href = "/";
+  }
 }
 
 export default function Navigation() {

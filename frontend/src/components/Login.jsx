@@ -49,8 +49,33 @@ class Login extends Component {
             <Grid item sm={12} md={9} lg={4} style={{margin: '25vh auto 0 auto'}}>
                 <form onSubmit={this.handleSubmit} display="block">
                     <h1>Login</h1>
-                    <TextField style={{width: '100%', 'marginBottom': '3vh'}} id="email" name="username" label="Email" variant="outlined" value={this.state.username} onChange={this.onChange}/>
-                    <TextField style={{width: '100%', 'marginBottom': '3vh'}} type="password" id="password" name="password" label="Password" variant="outlined" value={this.state.password} onChange={this.onChange}/>
+                    <TextField
+                          style={{width: '100%', 'marginBottom': '3vh'}}
+                          id="email"
+                          name="username"
+                          label="Email"
+                          variant="outlined"
+                          value={this.state.username}
+                          onChange={this.onChange}
+                          error={this.props.errors.username !== ""
+                                  && this.props.errors.username !== null
+                                  && this.props.errors.username !== undefined}
+                          helperText={this.props.errors.username}
+                    />
+                    <TextField
+                          style={{width: '100%', 'marginBottom': '3vh'}}
+                          type="password"
+                          id="password"
+                          name="password"
+                          label="Password"
+                          variant="outlined"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                          error={this.props.errors.password !== ""
+                                  && this.props.errors.password !== null
+                                  && this.props.errors.password !== undefined}
+                          helperText={this.props.errors.password}
+                    />
                     <Button style={{width: '100%'}} variant="contained" color="primary" type="submit">Login</Button>
                 </form>
             </Grid>

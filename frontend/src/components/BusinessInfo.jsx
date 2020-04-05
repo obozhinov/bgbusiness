@@ -98,11 +98,12 @@ class BusinessInfo extends Component {
     return (
       <Container>
         <Paper style={{background: "#f5f5f5", paddingTop: "5vh", paddingBottom: "5vh"}}>
-          <a style={{decoration: "none", color: "black"}} href={this.state.website} target="_blank"><h1 style={{marginTop: "5vh"}}>{this.state.name}</h1></a>
-          <img style={{height: "85vh", width: "60vw", maxWidht: "100vw"}} src={this.defaultImage(this.state.imagePath)} alt="Image for business"/>
+          <a style={{textDecoration: "none", color: "black"}} href={this.state.website} target="_blank" rel="noopener noreferrer"><h1 style={{marginTop: "5vh"}}>{this.state.name}</h1></a>
+          <img style={{height: "85vh", width: "60vw", maxWidht: "100vw"}} src={this.defaultImage(this.state.imagePath)} alt="business"/>
           <p>{this.state.description}</p>
           <p>We are {doHiring} hiring at the moment!</p>
-          <a href={this.state.website} target="_blank">{this.state.website}</a>
+          <a href={this.state.website} target="_blank" rel="noopener noreferrer">{this.state.website}</a>
+          {email} {phone}
           {address}
         </Paper>
       </Container>
